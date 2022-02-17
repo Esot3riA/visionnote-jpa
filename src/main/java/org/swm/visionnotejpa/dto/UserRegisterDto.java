@@ -3,6 +3,7 @@ package org.swm.visionnotejpa.dto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.swm.visionnotejpa.entity.User;
 import org.swm.visionnotejpa.entity.UserType;
 
 import static org.springframework.util.StringUtils.*;

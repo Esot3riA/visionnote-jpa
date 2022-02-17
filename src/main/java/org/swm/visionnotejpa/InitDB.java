@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.swm.visionnotejpa.dto.UserRegisterDto;
 import org.swm.visionnotejpa.entity.Avatar;
-import org.swm.visionnotejpa.entity.User;
 import org.swm.visionnotejpa.entity.UserRole;
 import org.swm.visionnotejpa.entity.UserType;
 import org.swm.visionnotejpa.repository.AvatarRepository;
