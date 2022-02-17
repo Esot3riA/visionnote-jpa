@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.swm.visionnotejpa.dto.UserRegisterDto;
 import org.swm.visionnotejpa.entity.User;
+import org.swm.visionnotejpa.entity.UserRole;
 import org.swm.visionnotejpa.exception.EmailDuplicatedException;
 import org.swm.visionnotejpa.repository.AvatarRepository;
 import org.swm.visionnotejpa.repository.UserRepository;
-import org.swm.visionnotejpa.repository.UserRoleRepository;
-import org.swm.visionnotejpa.repository.UserTypeRepository;
 
 @Service
 @Transactional(readOnly = true)
@@ -18,8 +17,6 @@ import org.swm.visionnotejpa.repository.UserTypeRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
-    private final UserTypeRepository userTypeRepository;
     private final AvatarRepository avatarRepository;
 
     private final PasswordEncoder passwordEncoder;
@@ -57,7 +54,7 @@ public class UserService {
                 .password(passwordEncoder.encode(userRegisterDto.getPassword()))
                 .nickname(userRegisterDto.getNickname())
                 .type(userRegisterDto.getType())
-                .role(userRoleRepository.findMemberRole())
+                .role(UserRole.MEMBER)
                 .avatar(avatarRepository.findDefaultAvatar())
                 .build();
         return user;
@@ -69,7 +66,7 @@ public class UserService {
                 .password(passwordEncoder.encode(userRegisterDto.getPassword()))
                 .nickname(userRegisterDto.getNickname())
                 .type(userRegisterDto.getType())
-                .role(userRoleRepository.findAdminRole())
+                .role(UserRole.ADMIN)
                 .avatar(avatarRepository.findDefaultAvatar())
                 .build();
         return user;

@@ -20,13 +20,11 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "type_id")
+    @Enumerated(EnumType.STRING)
     private UserType type;
 
     @NotNull
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "role_id")
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @NotNull

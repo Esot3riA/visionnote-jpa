@@ -1,15 +1,17 @@
 package org.swm.visionnotejpa.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.swm.visionnotejpa.dto.UserRegisterDto;
 import org.swm.visionnotejpa.entity.User;
+import org.swm.visionnotejpa.entity.UserRole;
+import org.swm.visionnotejpa.entity.UserType;
 import org.swm.visionnotejpa.repository.UserRepository;
 import org.swm.visionnotejpa.service.UserService;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -28,22 +30,54 @@ public class UserController {
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 아이디입니다.")));
     }
 
+    @PostMapping("/user")
+    public CreateUserResponse saveUser(@RequestBody @Valid CreateUserRequest request) {
+        UserRegisterDto userRegisterDto = new UserRegisterDto(
+                request.getEmail(),
+                request.getPassword(),
+                request.getNickname(),
+                request.getType());
+
+        Long id = userService.createUser(userRegisterDto);
+        return new CreateUserResponse(id);
+    }
+
     @Data
     static class UserDto {
         private Long id;
         private String email;
         private String nickname;
-        private String type;
-        private String role;
+        private UserType type;
+        private UserRole role;
         private String avatar;
 
         public UserDto(User user) {
             this.id = user.getId();
             this.email = user.getEmail();
             this.nickname = user.getNickname();
-            this.type = user.getType().getName();
-            this.role = user.getRole().getName();
+            this.type = user.getType();
+            this.role = user.getRole();
             this.avatar = user.getAvatar().getSavedName();
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
+    }
+
+    @Data
+    static class CreateUserRequest {
+        private String email;
+        private String password;
+        private String nickname;
+        private UserType type;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class CreateUserResponse {
+        private Long id;
     }
 }

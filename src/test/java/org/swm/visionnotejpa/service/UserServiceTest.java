@@ -8,7 +8,6 @@ import org.swm.visionnotejpa.dto.UserRegisterDto;
 import org.swm.visionnotejpa.entity.UserType;
 import org.swm.visionnotejpa.exception.EmailDuplicatedException;
 import org.swm.visionnotejpa.repository.UserRepository;
-import org.swm.visionnotejpa.repository.UserTypeRepository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -21,8 +20,6 @@ class UserServiceTest {
 
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    UserTypeRepository userTypeRepository;
 
     @Test
     public void createUser() throws Exception {
@@ -36,7 +33,7 @@ class UserServiceTest {
         assertThat(userRepository.findById(id).get().getEmail()).isEqualTo(testUserDto.getEmail());
     }
 
-    @Test()
+    @Test
     public void createDuplicatedUser() throws Exception {
         // given
         UserRegisterDto testUserDto = createTestUserDto("test@test.com");
@@ -60,7 +57,7 @@ class UserServiceTest {
     private UserRegisterDto createTestUserDto(String email) {
         String password = "1q2w3e4r";
         String nickname = "test_user";
-        UserType universityType = userTypeRepository.findUniversityType();
+        UserType universityType = UserType.UNIVERSITY;
         return new UserRegisterDto(email, password, nickname, universityType);
     }
 
