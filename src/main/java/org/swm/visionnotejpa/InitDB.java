@@ -67,7 +67,7 @@ public class InitDB {
             User adminUser = User.builder()
                     .email("esot3ria@gmail.com")
                     .nickname("Esot3riA")
-                    .password(passwordEncoder.encode("1q2w3e4r"))
+                    .password("1q2w3e4r")
                     .role(userRoleRepository.findAdminRole())
                     .type(userTypeRepository.findUniversityType())
                     .avatar(avatarRepository.findDefaultAvatar())
