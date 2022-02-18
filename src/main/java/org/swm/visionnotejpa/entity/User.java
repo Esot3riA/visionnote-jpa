@@ -1,8 +1,11 @@
 package org.swm.visionnotejpa.entity;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -32,6 +35,7 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "avatar_id")
     private Avatar avatar;
 
+    @Email
     @NotBlank
     private String email;
 
@@ -39,5 +43,19 @@ public class User extends BaseTimeEntity {
     private String password;
 
     @NotBlank
+    @Length(min = 2, max = 16)
     private String nickname;
+
+    public void changePassword(String encryptedPassword) {
+        this.password = encryptedPassword;
+    }
+
+    public void changeNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void changeType(UserType type) {
+        this.type = type;
+    }
+
 }

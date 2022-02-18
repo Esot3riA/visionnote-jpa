@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.swm.visionnotejpa.dto.UserRegisterDto;
+import org.swm.visionnotejpa.dto.UserUpdateDto;
 import org.swm.visionnotejpa.entity.User;
 import org.swm.visionnotejpa.entity.UserRole;
 import org.swm.visionnotejpa.entity.UserType;
@@ -40,6 +41,28 @@ public class UserController {
 
         Long id = userService.createUser(userRegisterDto);
         return new CreateUserResponse(id);
+    }
+
+    @PutMapping("/user/{id}")
+    public UpdateUserResponse updateUserInfo(
+            @PathVariable @Valid Long id,
+            @RequestBody @Valid UserUpdateDto userUpdateDto) {
+        userService.updateInfo(id, userUpdateDto);
+
+        User updatedUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 아이디입니다."));
+        return new UpdateUserResponse(updatedUser.getId());
+    }
+
+    @PutMapping("/user/pwchange/{id}")
+    public UpdateUserResponse updateUserPassword(
+            @PathVariable @Valid Long id,
+            @RequestBody @Valid String password) {
+        userService.updatePassword(id, password);
+
+        User updatedUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 유저 아이디입니다."));
+        return new UpdateUserResponse(updatedUser.getId());
     }
 
     @Data
@@ -78,6 +101,12 @@ public class UserController {
     @Data
     @AllArgsConstructor
     static class CreateUserResponse {
+        private Long id;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateUserResponse {
         private Long id;
     }
 }
